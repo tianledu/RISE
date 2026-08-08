@@ -20,4 +20,3 @@ Open `http://127.0.0.1:4173/`.
 - `static/js/pdf-figures.mjs`: client-side PDF.js figure rendering without viewer chrome
 - `static/images/`: original paper figures used directly as PDF sources
 - `static/pdfs/`: paper and supplementary material
-- `static/code/rise_code.zip`: reproducibility package
