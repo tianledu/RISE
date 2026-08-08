@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2563eb">
+
+  <link rel="icon" type="image/png" href="favicon.png?v=2">
+  <link rel="apple-touch-icon" href="favicon.png?v=2">
+
+  <title>RISE: Learning Structural Illumination for Unsupervised Low-Light Enhancement</title>
+  <meta name="title" content="RISE: Learning Structural Illumination for Unsupervised Low-Light Enhancement">
+  <meta name="description" content="RISE learns relative illumination structure from reliable bright regions and decouples it from absolute exposure for robust, scene-adaptive low-light enhancement.">
+  <meta name="keywords" content="low-light image enhancement, unsupervised learning, illumination modeling, exposure control, computer vision, RISE">
+  <meta name="author" content="Tianle Du, Peiyuan He, Hainuo Wang, Tianxiu Yu, Xiaojie Guo">
+  <meta name="robots" content="index, follow">
+  <meta name="language" content="English">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="Tianjin University">
+  <meta property="og:title" content="RISE: Learning Structural Illumination for Unsupervised Low-Light Enhancement">
+  <meta property="og:description" content="Structural illumination modeling from reliable bright regions with scene-adaptive exposure control.">
+
+  <meta name="citation_title" content="Learning Structural Illumination for Unsupervised Low-Light Enhancement">
+  <meta name="citation_author" content="Du, Tianle">
+  <meta name="citation_author" content="He, Peiyuan">
+  <meta name="citation_author" content="Wang, Hainuo">
+  <meta name="citation_author" content="Yu, Tianxiu">
+  <meta name="citation_author" content="Guo, Xiaojie">
+  <meta name="citation_pdf_url" content="static/pdfs/rise_iclr2026.pdf">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script defer src="static/js/fontawesome.all.min.js"></script>
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+  <script type="module" src="static/js/pdf-figures.mjs"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ScholarlyArticle",
+    "headline": "Learning Structural Illumination for Unsupervised Low-Light Enhancement",
+    "description": "RISE decouples relative illumination structure from absolute exposure and learns structure from reliable bright regions for robust low-light enhancement.",
+    "author": [
+      {"@type": "Person", "name": "Tianle Du"},
+      {"@type": "Person", "name": "Peiyuan He"},
+      {"@type": "Person", "name": "Hainuo Wang"},
+      {"@type": "Person", "name": "Tianxiu Yu"},
+      {"@type": "Person", "name": "Xiaojie Guo"}
+    ],
+    "keywords": ["low-light image enhancement", "unsupervised learning", "illumination modeling", "exposure control"],
+    "isAccessibleForFree": true
+  }
+  </script>
+</head>
+<body>
+  <button class="scroll-to-top" onclick="scrollToTop()" title="Scroll to top" aria-label="Scroll to top">
+    <i class="fas fa-chevron-up" aria-hidden="true"></i>
+  </button>
+
+  <div class="more-works-container">
+    <a class="more-works-btn" href="https://dutianle.ltd/#my-papers" target="_blank" rel="noreferrer" title="View more works">
+      <i class="fas fa-flask" aria-hidden="true"></i>
+      More Works
+      <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+    </a>
+  </div>
+
+  <main id="main-content">
+    <section class="hero publication-header">
+      <div class="hero-body">
+        <div class="container is-max-desktop">
+          <div class="columns is-centered">
+            <div class="column has-text-centered">
+              <h1 class="title is-1 publication-title">Learning Structural Illumination for Unsupervised Low-Light Enhancement</h1>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block"><a href="https://scholar.google.com/citations?user=e5P7Qc4AAAAJ" target="_blank" rel="noreferrer">Tianle Du,</a><sup>1</sup></span>
+                <span class="author-block">Peiyuan He,<sup>1</sup></span>
+                <span class="author-block"><a href="https://scholar.google.com/citations?user=to4d0WcAAAAJ" target="_blank" rel="noreferrer">Hainuo Wang,</a><sup>1</sup></span>
+                <span class="author-block">Tianxiu Yu,<sup>2</sup></span>
+                <span class="author-block"><a href="https://scholar.google.com/citations?user=RL7jPuQAAAAJ" target="_blank" rel="noreferrer">Xiaojie Guo</a><sup>1,*</sup></span>
+              </div>
+
+              <div class="is-size-5 publication-authors">
+                <span class="author-block"><sup>1</sup>Tianjin University &nbsp;&nbsp; <sup>2</sup>Dunhuang Academy</span>
+                <span class="publication-venue">Preprint</span>
+                <span class="eql-cntrb"><small><br><sup>*</sup>Corresponding Author</small></span>
+                <span class="eql-cntrb contact-emails"><small><br>{dutianle, peiyuan_he, hainuo}@tju.edu.cn, xj.max.guo@gmail.com</small></span>
+              </div>
+
+              <div class="column has-text-centered">
+                <div class="publication-links">
+                  <span class="link-block">
+                    <a href="static/pdfs/rise_iclr2026.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon"><i class="fas fa-file-pdf" aria-hidden="true"></i></span>
+                      <span>Paper</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a href="static/code/rise_code.zip" download class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon"><i class="fab fa-github" aria-hidden="true"></i></span>
+                      <span>Code</span>
+                    </a>
+                  </span>
+                  <span class="link-block">
+                    <a href="static/pdfs/rise_iclr2026_supplementary.pdf" target="_blank" class="external-link button is-normal is-rounded is-dark">
+                      <span class="icon"><i class="fas fa-paperclip" aria-hidden="true"></i></span>
+                      <span>Supplement</span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero teaser">
+      <div class="container is-max-desktop">
+        <div class="hero-body">
+          <div class="pdf-figure-shell" style="--figure-ratio: 2.245;" data-pdf-src="static/images/6_bright_psnr_3d_v4.pdf">
+            <canvas class="pdf-figure-canvas" role="img" aria-label="RISE overview of benchmark brightness distributions, efficiency, and structural illumination"></canvas>
+            <span class="pdf-loading">Loading figure...</span>
+            <a class="pdf-open-link" href="static/images/6_bright_psnr_3d_v4.pdf" target="_blank" rel="noreferrer" title="Open original PDF" aria-label="Open Figure 1 as PDF"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+          </div>
+          <h2 class="subtitle has-text-centered teaser-caption">
+            <strong>Figure 1.</strong> RISE consistently delivers a superior PSNR-FLOPs trade-off across diverse benchmark brightness distributions while explicitly separating relative illumination structure from absolute exposure.
+          </h2>
+        </div>
+      </div>
+    </section>
+
+    <section class="section hero is-light">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered has-text-centered">
+          <div class="column is-four-fifths">
+            <h2 class="title is-3">Abstract</h2>
+            <div class="content has-text-justified">
+              <p>Existing unsupervised low-light image enhancement (LLIE) methods often estimate illumination directly from the entire low-light input, without separating its spatially varying illumination pattern, termed relative illumination structure, from the absolute exposure level or preventing unreliable low signal-to-noise ratio regions from biasing the estimate. Moreover, fixed exposure targets impose a scene-agnostic enhancement criterion, limiting adaptation across diverse lighting conditions. Inspired by the spatial propagation of light, we propose a <em>Relative Illumination Structure Estimation</em> (RISE) framework that decouples relative illumination structure from absolute exposure and infers it from reliable bright regions, enabling interpretable and robust enhancement. For scene-adaptive exposure adjustment, we further propose a <em>Dual-Metering Exposure Reference</em> derived from each input, allowing RISE to adapt the enhancement strength to individual scenes and generalize across diverse lighting conditions. Extensive benchmark and real-world generalization experiments show that RISE achieves state-of-the-art performance among unsupervised LLIE methods while producing visually natural results.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero is-small post-abstract-section">
+      <div class="hero-body">
+        <div class="container">
+          <h2 class="title is-3">Structural Illumination Analysis</h2>
+          <div class="section-intro content has-text-justified">
+            <p>Unsupervised LLIE faces two closely related difficulties. First, severely underexposed regions have a low signal-to-noise ratio, yet most methods treat the entire image as equally reliable when estimating illumination. This can make the model brighten noisy shadows incorrectly while simultaneously overexposing highlights. Second, existing representations usually entangle the scene's spatial illumination pattern with its global exposure level, making their individual roles difficult to identify or control.</p>
+            <p>RISE starts from a different view: illumination contains a <strong>relative structure</strong> that describes how brightness varies across the scene and an <strong>absolute exposure</strong> that controls the overall output level. Reliable bright regions lie on stronger light-propagation paths, so their relationships to darker regions provide observable cues for recovering this structure.</p>
+          </div>
+          <div class="analysis-figures">
+            <article class="analysis-figure">
+              <div class="pdf-figure-shell" style="--figure-ratio: 2.486;" data-pdf-src="static/images/0_Motivation.pdf">
+                <canvas class="pdf-figure-canvas" role="img" aria-label="Motivation of RISE"></canvas>
+                <span class="pdf-loading">Loading figure...</span>
+                <a class="pdf-open-link" href="static/images/0_Motivation.pdf" target="_blank" rel="noreferrer" title="Open original PDF" aria-label="Open the motivation figure as PDF"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+              </div>
+              <h3 class="subfigure-title">Learning from reliable illumination cues</h3>
+              <div class="subfigure-text">
+                <p>Light strength changes spatially because of distance, occlusion, absorption, and other scene factors. Explicitly reconstructing this physical propagation from a single image is ill-posed, but the relative brightness relationships remain observable.</p>
+                <p>RISE therefore selects spatially dispersed bright patches as <strong>Key Illumination Cues (KICs)</strong>. Instead of allowing unreliable dark observations to dominate the estimate, these KICs act as anchors from which illumination relationships are propagated to the rest of the scene.</p>
+              </div>
+            </article>
+            <article class="analysis-figure">
+              <div class="pdf-figure-shell" style="--figure-ratio: 2.322;" data-pdf-src="static/images/8_scene_v2.pdf">
+                <canvas class="pdf-figure-canvas" role="img" aria-label="Validation of illumination structure and exposure decoupling"></canvas>
+                <span class="pdf-loading">Loading figure...</span>
+                <a class="pdf-open-link" href="static/images/8_scene_v2.pdf" target="_blank" rel="noreferrer" title="Open original PDF" aria-label="Open the decoupling figure as PDF"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+              </div>
+              <h3 class="subfigure-title">Stable structure, adaptive exposure</h3>
+              <div class="subfigure-text">
+                <p>Different exposures of the same scene preserve nearly identical relative parameters, while the independently predicted exposure offset changes with input brightness. This allows RISE to enhance underexposed inputs and also suppress excessive exposure without altering the underlying spatial structure.</p>
+                <p>The substantially lower consistency between different scenes confirms that the relative parameters describe scene-specific illumination organization rather than a fixed enhancement style.</p>
+              </div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero is-small is-light post-abstract-section">
+      <div class="hero-body">
+        <div class="container">
+          <h2 class="title is-3">Method Overview</h2>
+          <div class="section-intro content has-text-justified">
+            <p>Given a low-light input, RISE first removes global brightness from its pooled luminance to obtain a relative illumination map. It then selects a small set of bright, spatially dispersed KICs and predicts their target luminance. A relation branch connects every image patch to these reliable anchors in both luminance and spatial domains, forming a structured illumination field.</p>
+            <p>In parallel, a separate exposure branch predicts one image-level offset that controls global brightness. The final correction is composed in log-gain space, so relative structure and absolute exposure remain explicitly decoupled and can respond independently to scene content and input exposure.</p>
+          </div>
+          <div class="results-carousel">
+            <div class="item">
+              <div class="pdf-figure-shell" style="--figure-ratio: 2.817;" data-pdf-src="static/images/1_RISE.pdf">
+                <canvas class="pdf-figure-canvas" role="img" aria-label="Architecture of the RISE framework"></canvas>
+                <span class="pdf-loading">Loading figure...</span>
+                <a class="pdf-open-link" href="static/images/1_RISE.pdf" target="_blank" rel="noreferrer" title="Open original PDF" aria-label="Open the method figure as PDF"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+              </div>
+              <h2 class="subtitle has-text-centered">RISE jointly encodes image appearance and relative illumination, estimates a KIC-anchored structural field, and independently controls the absolute exposure of the enhanced image.</h2>
+            </div>
+          </div>
+
+          <div class="method-details">
+            <article>
+              <span>01</span>
+              <h3>Relative illumination map</h3>
+              <p>Patch luminance is normalized by its image-wide mean and mapped to log space. This removes global brightness while retaining signed local illumination differences.</p>
+            </article>
+            <article>
+              <span>02</span>
+              <h3>KIC relation modeling</h3>
+              <p>Each patch is related to the KICs through luminance discrepancy and a bounded spatial attenuation prior, while scene statistics provide global structural context.</p>
+            </article>
+            <article>
+              <span>03</span>
+              <h3>Decoupled exposure control</h3>
+              <p>Separate predictors estimate structural parameters and the exposure offset, leaving the structure stable while global brightness adapts to each input.</p>
+            </article>
+          </div>
+
+          <div class="results-carousel dmer-overview">
+            <h3 class="method-subsection-title">Scene-adaptive exposure supervision</h3>
+            <p class="method-subsection-copy">Fixed exposure targets encourage different scenes to converge toward the same brightness preference. The proposed <strong>Dual-Metering Exposure Reference (DMER)</strong> instead derives its training reference from each input. An absolute meter provides conservative global calibration, while a relative meter diffuses reliable luminance cues to describe spatial illumination demand. Blending both references provides adaptive supervision without paired normal-light images or training-set brightness statistics.</p>
+            <div class="item compact-figure-item">
+              <div class="pdf-figure-shell" style="--figure-ratio: 3.924;" data-pdf-src="static/images/6_DMER.pdf">
+                <canvas class="pdf-figure-canvas" role="img" aria-label="Dual-Metering Exposure Reference"></canvas>
+                <span class="pdf-loading">Loading figure...</span>
+                <a class="pdf-open-link" href="static/images/6_DMER.pdf" target="_blank" rel="noreferrer" title="Open original PDF" aria-label="Open the DMER figure as PDF"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+              </div>
+              <h2 class="subtitle has-text-centered">The absolute meter estimates global exposure demand, while the relative meter follows spatial illumination variation to produce an input-dependent final reference.</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero is-small post-abstract-section">
+      <div class="hero-body">
+        <div class="container quantitative-container">
+          <h2 class="title is-3">Quantitative Comparison</h2>
+          <p class="table-legend"><span class="best-key"></span> Best &nbsp;&nbsp; <span class="second-key"></span> Second best &nbsp;&nbsp; RISE uses the same LSRW-Nikon-trained checkpoint across datasets; RISE<sup>&dagger;</sup> is trained per benchmark.</p>
+
+          <div id="comparison-carousel" class="carousel results-carousel comparison-carousel">
+            <div class="item comparison-slide">
+              <div class="comparison-table-wrap">
+                <p class="comparison-table-label">Paired evaluation on LOL benchmarks</p>
+                <div class="comparison-table">
+                  <table class="comparison-table-html wide-table">
+                    <thead>
+                      <tr><th rowspan="2">Type</th><th rowspan="2">Method</th><th colspan="3">LOL-v1</th><th colspan="3">LOLv2-Real</th><th colspan="3">LOLv2-Synthetic</th><th rowspan="2">Params<br>(M)</th><th rowspan="2">FLOPs<br>(G)</th></tr>
+                      <tr><th>PSNR&uarr;</th><th>SSIM&uarr;</th><th>LPIPS&darr;</th><th>PSNR&uarr;</th><th>SSIM&uarr;</th><th>LPIPS&darr;</th><th>PSNR&uarr;</th><th>SSIM&uarr;</th><th>LPIPS&darr;</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td rowspan="4" class="type-cell">SL</td><td>MIRNet</td><td>20.57</td><td>0.772</td><td>0.254</td><td>21.28</td><td>0.792</td><td>0.354</td><td>21.74</td><td>0.878</td><td>0.138</td><td>31.79</td><td>760.10</td></tr>
+                      <tr><td>CIDNet</td><td>23.97</td><td>0.849</td><td>0.104</td><td>23.90</td><td>0.866</td><td>0.122</td><td>25.27</td><td>0.935</td><td>0.048</td><td>1.88</td><td>7.57</td></tr>
+                      <tr><td>Multinex</td><td>23.19</td><td>0.843</td><td>0.129</td><td>23.04</td><td>0.860</td><td>0.178</td><td>25.04</td><td>0.930</td><td>0.068</td><td>0.04</td><td>2.50</td></tr>
+                      <tr><td>M.-Nano</td><td>19.42</td><td>0.742</td><td>0.276</td><td>19.66</td><td>0.784</td><td>0.266</td><td>21.05</td><td>0.882</td><td>0.143</td><td>0.001</td><td>0.04</td></tr>
+                      <tr class="divider-top"><td rowspan="13" class="type-cell">UL</td><td>Zero-DCE</td><td>14.86</td><td>0.559</td><td>0.335</td><td>18.06</td><td>0.574</td><td>0.313</td><td>17.76</td><td>0.816</td><td class="best">0.168</td><td>0.08</td><td>4.83</td></tr>
+                      <tr><td>RUAS</td><td>16.41</td><td>0.500</td><td>0.270</td><td>15.33</td><td>0.488</td><td>0.310</td><td>13.40</td><td>0.644</td><td>0.364</td><td>0.003</td><td>0.83</td></tr>
+                      <tr><td>SCI</td><td>14.78</td><td>0.522</td><td>0.339</td><td>17.30</td><td>0.534</td><td>0.308</td><td>15.43</td><td>0.748</td><td>0.233</td><td>0.001</td><td>0.06</td></tr>
+                      <tr><td>PairLIE</td><td>19.51</td><td>0.736</td><td>0.248</td><td>19.88</td><td>0.778</td><td class="second">0.234</td><td class="second">19.07</td><td>0.797</td><td>0.230</td><td>0.34</td><td>20.81</td></tr>
+                      <tr><td>CLIP-LIT</td><td>12.39</td><td>0.493</td><td>0.382</td><td>15.18</td><td>0.529</td><td>0.369</td><td>16.19</td><td>0.775</td><td>0.204</td><td>0.28</td><td>16.96</td></tr>
+                      <tr><td>GDP</td><td>15.82</td><td>0.541</td><td>0.339</td><td>14.40</td><td>0.494</td><td>0.362</td><td>12.12</td><td>0.497</td><td>0.356</td><td>552.81</td><td>1037.26</td></tr>
+                      <tr><td>NeRCo</td><td>19.74</td><td>0.743</td><td>0.234</td><td>19.66</td><td>0.717</td><td>0.271</td><td>17.59</td><td>0.734</td><td>0.301</td><td>23.05</td><td>191.06</td></tr>
+                      <tr><td>CoLIE</td><td>13.76</td><td>0.481</td><td>0.356</td><td>15.08</td><td>0.501</td><td>0.322</td><td>14.30</td><td>0.654</td><td>0.251</td><td>0.13</td><td>806.25</td></tr>
+                      <tr><td>Li et al.</td><td>19.82</td><td>0.751</td><td>0.254</td><td>20.35</td><td class="second">0.795</td><td>0.266</td><td>17.82</td><td>0.802</td><td>0.293</td><td>0.35</td><td>19.00</td></tr>
+                      <tr><td>CLODE</td><td>19.60</td><td>0.718</td><td>0.287</td><td>17.87</td><td>0.681</td><td>0.335</td><td>17.21</td><td>0.783</td><td>0.313</td><td>0.22</td><td>600.96</td></tr>
+                      <tr><td>LASQ</td><td>17.22</td><td>0.739</td><td>0.240</td><td>20.45</td><td>0.778</td><td>0.239</td><td>18.37</td><td>0.791</td><td>0.240</td><td>24.08</td><td>88.67</td></tr>
+                      <tr class="ours-row"><td><strong>RISE</strong></td><td class="second">20.21</td><td class="second">0.772</td><td class="second">0.219</td><td class="second">21.33</td><td>0.780</td><td class="best"><strong>0.215</strong></td><td>18.72</td><td class="best"><strong>0.846</strong></td><td class="second">0.169</td><td>0.35</td><td>1.43</td></tr>
+                      <tr class="ours-row"><td><strong>RISE<sup>&dagger;</sup></strong></td><td class="best"><strong>21.03</strong></td><td class="best"><strong>0.776</strong></td><td class="best"><strong>0.215</strong></td><td class="best"><strong>22.34</strong></td><td class="best"><strong>0.801</strong></td><td>0.243</td><td class="best"><strong>19.33</strong></td><td class="second">0.838</td><td>0.200</td><td>0.35</td><td>1.43</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="item comparison-slide">
+              <div class="comparison-table-wrap">
+                <p class="comparison-table-label">Paired evaluation on LSRW, UHD-LL, and SICE</p>
+                <div class="comparison-table">
+                  <table class="comparison-table-html wide-table">
+                    <thead>
+                      <tr><th rowspan="2">Type</th><th rowspan="2">Method</th><th colspan="3">LSRW-Huawei</th><th colspan="3">LSRW-Nikon</th><th colspan="3">UHD-LL</th><th colspan="3">SICE</th></tr>
+                      <tr><th>PSNR&uarr;</th><th>SSIM&uarr;</th><th>LPIPS&darr;</th><th>PSNR&uarr;</th><th>SSIM&uarr;</th><th>LPIPS&darr;</th><th>PSNR&uarr;</th><th>SSIM&uarr;</th><th>LPIPS&darr;</th><th>PSNR&uarr;</th><th>SSIM&uarr;</th><th>LPIPS&darr;</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td rowspan="4" class="type-cell">SL</td><td>MIRNet</td><td>20.88</td><td>0.628</td><td>0.451</td><td>17.38</td><td>0.502</td><td>0.539</td><td>20.55</td><td>0.807</td><td>0.435</td><td>-</td><td>-</td><td>-</td></tr>
+                      <tr><td>CIDNet</td><td>20.71</td><td>0.618</td><td>0.359</td><td>17.14</td><td>0.503</td><td>0.300</td><td>23.80</td><td>0.875</td><td>0.209</td><td>18.60</td><td>0.611</td><td>0.407</td></tr>
+                      <tr><td>Multinex</td><td>21.26</td><td>0.632</td><td>0.362</td><td>17.59</td><td>0.516</td><td>0.325</td><td>21.12</td><td>0.837</td><td>0.372</td><td>18.39</td><td>0.614</td><td>0.465</td></tr>
+                      <tr><td>M.-Nano</td><td>19.73</td><td>0.604</td><td>0.357</td><td>16.87</td><td>0.506</td><td>0.354</td><td>19.28</td><td>0.807</td><td>0.419</td><td>16.93</td><td>0.572</td><td>0.443</td></tr>
+                      <tr class="divider-top"><td rowspan="10" class="type-cell">UL</td><td>Zero-DCE</td><td>16.40</td><td>0.475</td><td class="best">0.368</td><td>15.03</td><td>0.418</td><td>0.244</td><td>17.07</td><td>0.639</td><td>0.514</td><td>13.88</td><td>0.542</td><td>0.436</td></tr>
+                      <tr><td>RUAS</td><td>15.71</td><td>0.501</td><td>0.493</td><td>12.14</td><td>0.438</td><td>0.413</td><td>11.69</td><td>0.632</td><td>0.519</td><td>7.80</td><td>0.432</td><td>0.726</td></tr>
+                      <tr><td>SCI</td><td>15.70</td><td>0.439</td><td>0.379</td><td>14.55</td><td>0.410</td><td>0.241</td><td>15.47</td><td>0.598</td><td>0.531</td><td>9.68</td><td>0.479</td><td>0.580</td></tr>
+                      <tr><td>PairLIE</td><td>18.98</td><td>0.562</td><td>0.377</td><td>15.52</td><td>0.435</td><td>0.257</td><td>17.53</td><td>0.663</td><td>0.456</td><td>12.47</td><td>0.512</td><td>0.497</td></tr>
+                      <tr><td>CLIP-LIT</td><td>13.56</td><td>0.424</td><td>0.405</td><td>13.37</td><td>0.382</td><td>0.276</td><td>15.27</td><td>0.590</td><td>0.551</td><td>13.45</td><td>0.530</td><td>0.416</td></tr>
+                      <tr><td>CoLIE</td><td>14.76</td><td>0.420</td><td>0.401</td><td>12.87</td><td>0.389</td><td>0.277</td><td>17.89</td><td>0.625</td><td>-</td><td>14.06</td><td>0.543</td><td class="second">0.409</td></tr>
+                      <tr><td>CLODE</td><td>18.44</td><td>0.564</td><td>0.482</td><td>15.54</td><td>0.487</td><td>0.388</td><td>16.17</td><td class="second">0.777</td><td>0.454</td><td>13.49</td><td>0.514</td><td>0.567</td></tr>
+                      <tr><td>LASQ</td><td>19.67</td><td class="best">0.599</td><td>0.389</td><td>16.12</td><td class="best">0.491</td><td>0.257</td><td>20.13</td><td>0.749</td><td>0.399</td><td>14.01</td><td>0.540</td><td>0.450</td></tr>
+                      <tr class="ours-row"><td><strong>RISE</strong></td><td class="best"><strong>20.45</strong></td><td class="second">0.590</td><td>0.398</td><td class="best"><strong>16.71</strong></td><td class="best"><strong>0.491</strong></td><td class="best"><strong>0.236</strong></td><td class="best"><strong>22.22</strong></td><td>0.771</td><td class="second">0.384</td><td class="second">14.80</td><td class="second">0.554</td><td>0.466</td></tr>
+                      <tr class="ours-row"><td><strong>RISE<sup>&dagger;</sup></strong></td><td class="second">20.24</td><td>0.580</td><td class="second">0.374</td><td class="best"><strong>16.71</strong></td><td class="best"><strong>0.491</strong></td><td class="best"><strong>0.236</strong></td><td class="second">22.03</td><td class="best"><strong>0.788</strong></td><td class="best"><strong>0.373</strong></td><td class="best"><strong>16.73</strong></td><td class="best"><strong>0.570</strong></td><td class="best"><strong>0.407</strong></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+
+            <div class="item comparison-slide">
+              <div class="comparison-table-wrap">
+                <p class="comparison-table-label">No-reference evaluation on unseen real-world datasets</p>
+                <div class="comparison-table">
+                  <table class="comparison-table-html wide-table">
+                    <thead>
+                      <tr><th rowspan="2">Type</th><th rowspan="2">Method</th><th colspan="3">DICM</th><th colspan="3">LIME</th><th colspan="3">MEF</th><th colspan="3">NPE</th><th colspan="3">VV</th></tr>
+                      <tr><th>IQA&uarr;</th><th>IAA&uarr;</th><th>B.&darr;</th><th>IQA&uarr;</th><th>IAA&uarr;</th><th>B.&darr;</th><th>IQA&uarr;</th><th>IAA&uarr;</th><th>B.&darr;</th><th>IQA&uarr;</th><th>IAA&uarr;</th><th>B.&darr;</th><th>IQA&uarr;</th><th>IAA&uarr;</th><th>B.&darr;</th></tr>
+                    </thead>
+                    <tbody>
+                      <tr><td rowspan="2" class="type-cell">SL</td><td>MIRNet</td><td>2.7</td><td>1.90</td><td>42.3</td><td>2.4</td><td>1.78</td><td>35.7</td><td>2.2</td><td>1.57</td><td>42.3</td><td>2.2</td><td>1.71</td><td>31.0</td><td>2.6</td><td>1.67</td><td>31.4</td></tr>
+                      <tr><td>CIDNet</td><td>2.9</td><td>2.05</td><td>34.0</td><td>2.8</td><td>2.12</td><td class="best">17.3</td><td>2.8</td><td>2.20</td><td class="best">20.2</td><td>2.9</td><td>1.87</td><td>28.2</td><td>2.8</td><td>1.85</td><td class="best">13.6</td></tr>
+                      <tr class="divider-top"><td rowspan="5" class="type-cell">UL</td><td>RUAS</td><td>2.0</td><td>1.77</td><td>47.5</td><td>2.1</td><td>1.85</td><td>29.3</td><td>2.7</td><td>2.11</td><td>32.5</td><td>1.7</td><td>1.42</td><td>49.9</td><td>2.3</td><td>1.66</td><td>40.5</td></tr>
+                      <tr><td>Li et al.</td><td>2.7</td><td>1.89</td><td>31.9</td><td>2.4</td><td>1.82</td><td>18.5</td><td>2.5</td><td>1.85</td><td class="second">23.7</td><td>2.9</td><td>1.92</td><td>28.7</td><td>2.6</td><td>1.75</td><td>20.8</td></tr>
+                      <tr><td>CLODE</td><td>2.5</td><td>1.71</td><td>36.8</td><td>2.4</td><td>1.79</td><td>29.9</td><td>2.3</td><td>1.72</td><td>33.8</td><td>2.4</td><td>1.58</td><td>32.7</td><td>2.6</td><td>1.60</td><td>28.5</td></tr>
+                      <tr><td>LASQ</td><td class="second">3.4</td><td class="second">2.26</td><td class="second">30.2</td><td class="second">3.0</td><td class="second">2.18</td><td class="second">17.4</td><td class="second">3.0</td><td class="second">2.23</td><td>25.2</td><td class="second">3.4</td><td class="second">2.20</td><td class="second">23.3</td><td class="second">3.4</td><td class="second">2.02</td><td>17.2</td></tr>
+                      <tr class="ours-row"><td><strong>RISE</strong></td><td class="best"><strong>3.7</strong></td><td class="best"><strong>2.47</strong></td><td class="best"><strong>30.0</strong></td><td class="best"><strong>3.4</strong></td><td class="best"><strong>2.54</strong></td><td>21.5</td><td class="best"><strong>3.5</strong></td><td class="best"><strong>2.44</strong></td><td>25.0</td><td class="best"><strong>3.6</strong></td><td class="best"><strong>2.45</strong></td><td class="best"><strong>21.5</strong></td><td class="best"><strong>3.5</strong></td><td class="best"><strong>2.06</strong></td><td class="second">14.3</td></tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="hero is-small is-light post-abstract-section">
+      <div class="hero-body">
+        <div class="container">
+          <h2 class="title is-3">Visual Comparison</h2>
+          <div class="results-carousel visual-results">
+            <div class="item">
+              <div class="pdf-figure-shell" style="--figure-ratio: 4.331;" data-pdf-src="static/images/4_LOLUHDLL.pdf">
+                <canvas class="pdf-figure-canvas" role="img" aria-label="Visual comparisons on LOL and UHD-LL"></canvas>
+                <span class="pdf-loading">Loading figure...</span>
+                <a class="pdf-open-link" href="static/images/4_LOLUHDLL.pdf" target="_blank" rel="noreferrer" title="Open original PDF" aria-label="Open the benchmark visual comparison as PDF"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+              </div>
+              <h2 class="subtitle has-text-centered">RISE produces natural exposure correction and preserves color fidelity across LOL and UHD-LL.</h2>
+            </div>
+            <div class="item">
+              <div class="pdf-figure-shell" style="--figure-ratio: 4.558;" data-pdf-src="static/images/7_reality.pdf">
+                <canvas class="pdf-figure-canvas" role="img" aria-label="Generalization to a real-world scene captured with an iPhone 16 Pro"></canvas>
+                <span class="pdf-loading">Loading figure...</span>
+                <a class="pdf-open-link" href="static/images/7_reality.pdf" target="_blank" rel="noreferrer" title="Open original PDF" aria-label="Open the real-world comparison as PDF"><i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+              </div>
+              <h2 class="subtitle has-text-centered">Without additional tuning, RISE generalizes to real-world iPhone 16 Pro captures while preserving a broader dynamic range.</h2>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="BibTeX">
+      <div class="container is-max-desktop content">
+        <div class="bibtex-header">
+          <h2 class="title">BibTeX</h2>
+          <button class="copy-bibtex-btn" onclick="copyBibTeX()" title="Copy BibTeX" aria-label="Copy BibTeX">
+            <i class="fas fa-copy" aria-hidden="true"></i>
+            <span class="copy-text">Copy</span>
+          </button>
+        </div>
+        <pre id="bibtex-code"><code>@misc{du2026rise,
+  title     = {Learning Structural Illumination for Unsupervised Low-Light Enhancement},
+  author    = {Du, Tianle and He, Peiyuan and Wang, Hainuo and Yu, Tianxiu and Guo, Xiaojie},
+  note      = {Preprint},
+  year      = {2026}
+}</code></pre>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content has-text-centered">
+            <p>This page follows the structure of the <a href="https://github.com/nerfies/nerfies.github.io" target="_blank" rel="noreferrer">Nerfies</a> academic project page template.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
